@@ -682,9 +682,14 @@ export default class NotificationBackground {
 
       // If the cipher had a security task, mark it as complete
       if (cipherHasTask) {
-        if (cipherHasTask) {
-          await this.taskService.markAsComplete(updatedCipherTask.id, userId);
-        }
+        // guard against multiple (redundant) security tasks per cipher
+        await Promise.all(
+          tasks.map(
+            (task) =>
+              task.cipherId === cipherView?.id &&
+              this.taskService.markAsComplete(updatedCipherTask.id, userId),
+          ),
+        );
       }
     } catch (error) {
       await BrowserApi.tabSendMessageData(tab, "saveCipherAttemptCompleted", {

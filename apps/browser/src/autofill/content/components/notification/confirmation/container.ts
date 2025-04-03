@@ -53,13 +53,18 @@ export function NotificationConfirmationContainer({
     remainingTasksCount = task.remainingTasksCount || 0;
     tasksAreComplete = remainingTasksCount === 0;
 
+    // messageDetails =
+    //   remainingTasksCount > 0
+    //     ? chrome.i18n.getMessage("loginUpdateTaskSuccessAdditional", [
+    //         task.orgName,
+    //         `${remainingTasksCount}`,
+    //       ])
+    //     : chrome.i18n.getMessage("loginUpdateTaskSuccess", [task.orgName]);
+
     messageDetails =
       remainingTasksCount > 0
-        ? chrome.i18n.getMessage("loginUpdateTaskSuccessAdditional", [
-            task.orgName,
-            `${remainingTasksCount}`,
-          ])
-        : chrome.i18n.getMessage("loginUpdateTaskSuccess", [task.orgName]);
+        ? "Thank you for making your organization more secure. You have 3 more passwords to update."
+        : "Great job! You took the steps to make you and your organization more secure.";
   }
 
   return html`
@@ -110,10 +115,12 @@ function getConfirmationMessage(
   type?: NotificationType,
   error?: string,
 ) {
-  const loginSaveSuccessDetails = chrome.i18n.getMessage("loginSaveSuccessDetails", [username]);
-  const loginUpdatedSuccessDetails = chrome.i18n.getMessage("loginUpdatedSuccessDetails", [
-    username,
-  ]);
+  // const loginSaveSuccessDetails = chrome.i18n.getMessage("loginSaveSuccessDetails", [username]);
+  // const loginUpdatedSuccessDetails = chrome.i18n.getMessage("loginUpdatedSuccessDetails", [
+  //   username,
+  // ]);
+  const loginSaveSuccessDetails = `${username} saved to Bitwarden.`;
+  const loginUpdatedSuccessDetails = `${username} updated in Bitwarden.`;
 
   if (error) {
     return i18n.saveFailureDetails;
